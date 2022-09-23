@@ -2,28 +2,26 @@ const tx = require('../model/txModel');
 const axios = require('axios');
 const balAndPriceModel = require('../model/balAndPriceModel');
 
-//task-1
-
-const transaction = async (req,res) => {
+//todo Task 1
+const transaction = async (req, res) => {
     try {
-        const {address} =req.params;
-        const data = await tx.findOne({ address});
-        //fetch transaction from db first
+        const { address } = req.params;
 
-        if(data) {
+        const data = await tx.findOne({ address });
+
+        //todo fetch transaction from DB first;
+        if (data) {
             console.log('DB');
-            res.status(201).send({status:true,data:data});
-        }
-        else{
-           //fetch transaction from axios if not available in database
-           console.log('axios');
-           const userTx = await axios.post(`https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=QXHGPPVAHSFKWZCH5TZ17D9EIYQB8GPTE6`)
+            res.status(201).send({ status: true, data: data });
+        } else {
+            //todo fetch transaction from axios if not available in database;
+            console.log('axios');
+            const userTx = await axios.post(`https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=QXHGPPVAHSFKWZCH5TZ17D9EIYQB8GPTE6`)
                 .catch((err) => {
                     res.status(500).send({ status: false, message: err.message });
                 });
 
-
-          const saveTx = await tx.create({ address, transactions: userTx.data.result });
+            const saveTx = await tx.create({ address, transactions: userTx.data.result });
             res.status(201).send({ status: true, data: saveTx });
         }
 
@@ -31,8 +29,6 @@ const transaction = async (req,res) => {
         res.status(500).send({ status: false, message: error.message });
     }
 };
-
-
 
 //todo Task 2
 const priceEvery10Min = async (req, res) => {
