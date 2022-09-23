@@ -33,16 +33,7 @@ const transaction = async (req, res) => {
 //todo Task 2
 const priceEvery10Min = async (req, res) => {
     try {
-        // //! option 1;
-        // setInterval(async () => {
-        //     const etherPrice = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=inr`)
-        //         .catch((err) => {
-        //             res.status(500).send({ status: false, message: err.message });
-        //         });
-        //     console.log(etherPrice.data);
-        // }, 1000 * 60 * 10);
-
-        //! option 2 call this every ten minute using setInterval in frontend;
+        
         const etherPrice = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=inr`)
             .catch((err) => {
                 res.status(500).send({ status: false, message: err.message });
